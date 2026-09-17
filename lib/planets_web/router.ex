@@ -16,5 +16,7 @@ defmodule PlanetsWeb.Router do
 
   scope "/", PlanetsWeb do
     pipe_through :browser
+
+    live "/", TravelLive
   end
 end
