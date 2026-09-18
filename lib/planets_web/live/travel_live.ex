@@ -48,7 +48,7 @@ defmodule PlanetsWeb.TravelLive do
         <.button phx-click="clear">Clear Travel Path</.button>
       </div>
 
-      <.form for={@mass_form} phx-change="validate">
+      <.form for={@mass_form} phx-change="validate" phx-submit="validate">
         <.input field={@mass_form[:mass]} type="number" label="Equipment mass (kg)" />
       </.form>
 
@@ -97,7 +97,9 @@ defmodule PlanetsWeb.TravelLive do
      socket |> assign(mass_form: to_form(changeset, as: :ship, id: "ship")) |> recalculate()}
   end
 
-  defp to_destination(destination), do: String.to_existing_atom(destination)
+  defp to_destination(destination) do
+    Enum.find(TravelPath.destinations(), &(Atom.to_string(&1) == destination))
+  end
 
   defp label(atom), do: atom |> Atom.to_string() |> String.capitalize()
 

@@ -59,4 +59,23 @@ defmodule PlanetsWeb.TravelLiveTest do
 
     assert html =~ "must be greater than 0"
   end
+
+  test "ignores an unsupported destination", %{conn: conn} do
+    {:ok, view, _html} = live(conn, ~p"/")
+
+    html = render_click(view, "select", %{"destination" => "pluto"})
+
+    assert html =~ "No steps yet"
+  end
+
+  test "submitting the form on Enter calculates the total fuel", %{conn: conn} do
+    {:ok, view, _html} = live(conn, ~p"/")
+
+    view |> element("button", "Earth") |> render_click()
+    view |> element("button", "Launch") |> render_click()
+
+    html = render_submit(view, "validate", %{"ship" => %{"mass" => "28801"}})
+
+    assert html =~ "Total Fuel Required: 19772"
+  end
 end
