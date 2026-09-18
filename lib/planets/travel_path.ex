@@ -1,5 +1,7 @@
 defmodule Planets.TravelPath do
-  def destinations, do: [:earth, :moon, :mars]
+  alias Planets.Planet
+
+  def destinations, do: Planet.all()
 
   def landed?([]), do: true
   def landed?(path), do: match?({:land, _}, List.last(path))

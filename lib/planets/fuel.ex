@@ -1,5 +1,6 @@
 defmodule Planets.Fuel do
-  @gravity %{earth: 9.807, moon: 1.62, mars: 3.711}
+  alias Planets.Planet
+
   @coefficients %{launch: {0.042, 33}, land: {0.033, 42}}
 
   def calculate(travel_path, ship_mass) do
@@ -7,7 +8,7 @@ defmodule Planets.Fuel do
       travel_path
       |> Enum.reverse()
       |> Enum.reduce({0, ship_mass}, fn {action, planet}, {total_fuel, total_mass} ->
-        fuel = calculate_fuel(total_mass, gravity(planet), action)
+        fuel = calculate_fuel(total_mass, Planet.gravity(planet), action)
         {total_fuel + fuel, total_mass + fuel}
       end)
 
@@ -20,8 +21,6 @@ defmodule Planets.Fuel do
       fuel -> fuel + calculate_fuel(fuel, gravity, action)
     end
   end
-
-  defp gravity(planet), do: Map.fetch!(@gravity, planet)
 
   defp formula_fuel(mass, gravity, action) do
     {c1, c2} = @coefficients[action]
