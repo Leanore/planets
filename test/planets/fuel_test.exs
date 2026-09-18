@@ -13,7 +13,29 @@ defmodule Planets.FuelTest do
       assert Fuel.calculate([{:land, :earth}], 28803.5) == 13448
     end
 
-    test "calculates total fuel for the whole mission" do
+    test "calculates total fuel for the Apollo 11 mission" do
+      travel_path = [
+        {:launch, :earth},
+        {:land, :moon},
+        {:launch, :moon},
+        {:land, :earth}
+      ]
+
+      assert Fuel.calculate(travel_path, 28801) == 51898
+    end
+
+    test "calculates total fuel for the Mars mission" do
+      travel_path = [
+        {:launch, :earth},
+        {:land, :mars},
+        {:launch, :mars},
+        {:land, :earth}
+      ]
+
+      assert Fuel.calculate(travel_path, 14606) == 33388
+    end
+
+    test "calculates total fuel for the Passenger Ship mission" do
       travel_path = [
         {:launch, :earth},
         {:land, :moon},
