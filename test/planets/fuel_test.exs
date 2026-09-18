@@ -4,9 +4,13 @@ defmodule Planets.FuelTest do
   alias Planets.Fuel
 
   describe "calculate/2" do
-    test "calculates total fuel for single action considering all extra fuel" do
+    test "calculates integer total fuel for single action considering all extra fuel" do
       travel_path = [{:land, :earth}]
       assert Fuel.calculate(travel_path, 28801) == 13447
+    end
+
+    test "calculates integer total fuel for a float mass" do
+      assert Fuel.calculate([{:land, :earth}], 28803.5) == 13448
     end
 
     test "calculates total fuel for the whole mission" do
@@ -30,6 +34,14 @@ defmodule Planets.FuelTest do
     test "returns formula fuel amount when no extra fuel needed" do
       travel_path = [{:land, :earth}]
       assert Fuel.calculate(travel_path, 254) == 40
+    end
+
+    test "returns 0 for a zero mass" do
+      assert Fuel.calculate([{:land, :earth}], 0) == 0
+    end
+
+    test "raises for a negative mass" do
+      assert_raise FunctionClauseError, fn -> Fuel.calculate([{:land, :earth}], -1) end
     end
   end
 end

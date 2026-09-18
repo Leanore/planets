@@ -3,7 +3,8 @@ defmodule Planets.Fuel do
 
   @coefficients %{launch: {0.042, 33}, land: {0.033, 42}}
 
-  def calculate(travel_path, ship_mass) do
+  @spec calculate([{:launch | :land, Planet.t()}], number()) :: non_neg_integer()
+  def calculate(travel_path, ship_mass) when is_number(ship_mass) and ship_mass >= 0 do
     {total_fuel, _total_mass} =
       travel_path
       |> Enum.reverse()
